@@ -10,9 +10,12 @@ var comic = require('./lib/comic.js');
 
 function main (args) {
   co(function * () {
-    // yield * comic.fetchAll();
-    // yield * comic.pollAll();
-    // yield * comic.getUpdates();
+    console.info('fetching');
+    yield * comic.fetchAll();
+    console.info('ok, polling');
+    yield * comic.pollAll();
+    console.info('ok, updating');
+    yield * comic.getUpdates();
   }).then(() => {
     var app = koa();
 
@@ -23,6 +26,9 @@ function main (args) {
     app.use(koaRoute.get('/comics/:comic_id/episodes/:episode_id/pages', api.getPages));
 
     app.listen(1337);
+  }).catch((e) => {
+    console.error(e);
+    console.error(e.stack);
   });
 
   return 0;
