@@ -32,25 +32,34 @@ function main (args) {
     httpClient: httpClient,
   });
 
+  var server = koa();
+
+  server.use(koaRoute.get('/updates', api.getUpdates));
+  server.use(koaRoute.get('/comics', api.getComics));
+  server.use(koaRoute.get('/comics/:comic_id', api.getComic));
+  server.use(koaRoute.get('/comics/:comic_id/episodes', api.getEpisodes));
+  server.use(koaRoute.get('/comics/:comic_id/episodes/:episode_id/pages', api.getPages));
+
+  server.listen(args.port);
+  console.info('listening on', args.port);
+
   co(function * () {
     console.info('fetching');
     yield * comic_.fetchAll();
-    console.info('ok, polling');
-    yield * comic_.pollAll();
-    console.info('ok, updating');
-    yield * comic_.getUpdates();
+
+    var handle = setInterval(() => {
+      co(function * () {
+        console.info('updating');
+        yield * comic_.fetchUpdates();
+      });
+    }, 1000 * 60 * 60);
+
+    console.info('polling');
+    while (true) {
+      yield * comic_.process();
+    }
   }).then(() => {
-    var app = koa();
-
-    app.use(koaRoute.get('/updates', api.getUpdates));
-    app.use(koaRoute.get('/comics', api.getComics));
-    app.use(koaRoute.get('/comics/:comic_id', api.getComic));
-    app.use(koaRoute.get('/comics/:comic_id/episodes', api.getEpisodes));
-    app.use(koaRoute.get('/comics/:comic_id/episodes/:episode_id/pages', api.getPages));
-
-    app.listen(args.port);
-
-    console.info('listening on', args.port);
+    console.info('ok');
   }).catch((e) => {
     console.error(e);
     console.error(e.fileName);
