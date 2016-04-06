@@ -15,6 +15,7 @@
     "koa-route": "",
     "node-fetch": "",
     "jsdom": "",
-    "co-sqlite3": ""
+    "co-sqlite3": "",
+    "socks5-http-client": ""
   }
 }
