@@ -53,6 +53,8 @@ function main (args) {
     console.info('listening on', args.port);
   }).catch((e) => {
     console.error(e);
+    console.error(e.fileName);
+    console.error(e.lineNumber);
     console.error(e.stack);
   });
 
