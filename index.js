@@ -44,20 +44,22 @@ function main (args) {
   console.info('listening on', args.port);
 
   co(function * () {
-    console.info('fetching');
-    yield * comic_.fetchAll();
+    // always polling
+    return Promise.all([co(function * () {
+      console.info('polling');
+      while (true) {
+        yield * comic_.process();
+      }
+    }), co(function * () {
+      console.info('fetching');
+      yield * comic_.fetchAll();
 
-    var handle = setInterval(() => {
-      co(function * () {
+      while (true) {
+        yield asyncio.sleep(1000 * 60 * 60);
         console.info('updating');
         yield * comic_.fetchUpdates();
-      });
-    }, 1000 * 60 * 60);
-
-    console.info('polling');
-    while (true) {
-      yield * comic_.process();
-    }
+      }
+    })]);
   }).then(() => {
     console.info('ok');
   }).catch((e) => {
