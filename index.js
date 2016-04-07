@@ -8,6 +8,7 @@ var argparse = require('argparse');
 var api = require('./lib/api.js');
 var comic = require('./lib/comic.js');
 var net = require('./lib/net.js');
+var asyncio = require('./lib/asyncio.js');
 
 
 function main (args) {
