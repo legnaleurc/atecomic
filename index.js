@@ -35,11 +35,11 @@ function main (args) {
 
   var server = koa();
 
-  server.use(koaRoute.get('/updates', api.getUpdates));
-  server.use(koaRoute.get('/comics', api.getComics));
-  server.use(koaRoute.get('/comics/:comic_id', api.getComic));
-  server.use(koaRoute.get('/comics/:comic_id/episodes', api.getEpisodes));
-  server.use(koaRoute.get('/comics/:comic_id/episodes/:episode_id/pages', api.getPages));
+  server.use(koaRoute.get('/api/v1/updates', api.getUpdates));
+  server.use(koaRoute.get('/api/v1/comics', api.getComics));
+  server.use(koaRoute.get('/api/v1/comics/:comic_id', api.getComic));
+  server.use(koaRoute.get('/api/v1/comics/:comic_id/episodes', api.getEpisodes));
+  server.use(koaRoute.get('/api/v1/comics/:comic_id/episodes/:episode_id/pages', api.getPages));
 
   server.listen(args.port);
   console.info('listening on', args.port);
