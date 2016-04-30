@@ -56,9 +56,9 @@ function main (args) {
       yield * comic_.fetchAll();
 
       while (true) {
-        yield asyncio.sleep(1000 * 60 * 60);
         console.info('updating');
         yield * comic_.fetchUpdates();
+        yield asyncio.sleep(1000 * 60 * 60);
       }
     })]);
   }).then(() => {
