@@ -44,6 +44,11 @@ function main (args) {
   server.listen(args.port);
   console.info('listening on', args.port);
 
+  var controller = koa();
+  controller.context.comic = comic_;
+  controller.use(koaRoute.post('/ctl/v1/comics/:comic_id', api.postComic));
+  controller.listen(7331);
+
   co(function * () {
     // always polling
     return Promise.all([co(function * () {
