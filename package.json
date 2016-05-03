@@ -18,6 +18,7 @@
     "co-sqlite3": "",
     "socks5-http-client": "",
     "argparse": "",
-    "camelcase": ""
+    "camelcase": "",
+    "winston": ""
   }
 }
