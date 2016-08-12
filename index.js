@@ -47,6 +47,7 @@ function main (args) {
   var controller = koa();
   controller.context.comic = comic_;
   controller.use(koaRoute.post('/ctl/v1/comics/:comic_id', api.postComic));
+  controller.use(koaRoute.patch('/ctl/v1/comics/:comic_id/episodes/:episode_id', api.patchEpisode));
   controller.listen(7331);
 
   co(function * () {
